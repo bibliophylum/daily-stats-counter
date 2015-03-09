@@ -1,0 +1,59 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+use DBI;
+use Text::CSV;
+
+# set some paths
+my $csvFile = "/opt/dsc/daily-stats-counter.csv";
+my $sqlitedb = "/opt/dsc/database/dsc.db";
+
+# read the csv file of stats to gather
+my @rows;
+my $csv = Text::CSV->new ( { binary => 1 } )  # should set binary attribute.
+    or die "Cannot use CSV: ".Text::CSV->error_diag ();
+
+open my $fh, "<:encoding(utf8)", $csvFile or die "$csvFile: $!";
+while ( my $row = $csv->getline( $fh ) ) {
+    #$row->[2] =~ m/pattern/ or next; # 3rd field should match
+    push @rows, $row;
+}
+$csv->eof or $csv->error_diag();
+close $fh;
+
+
+# create the db 
+my $dbh = DBI->connect("dbi:SQLite:dbname=$sqlitedb","","");
+
+# create the tables
+$dbh->do("create table tab (id smallint, seq smallint, name text)") or die $dbh->errstr;
+$dbh->do("create table section (id smallint, tabid smallint, seq smallint, name text)") or die $dbh->errstr;
+$dbh->do("create table statcat (id smallint, secid smallint, seq smallint, statistic text, explanation text)") or die $dbh->errstr;
+$dbh->do("create table library (id smallint, library text, password text)") or die $dbh->errstr;
+$dbh->do("create table daily (libid smallint, ds text, statcatid smallint, value smallint default 0)") or die $dbh->errstr;
+
+# build sql statements from csv
+my $tab_id=0;  my $tab_seq=0;  my $tab_curr="";
+my $sec_id=0;  my $sec_seq=0;  my $sec_curr="";
+my $sc_id=0;   my $sc_seq=0;
+my $lid=1;
+
+for my $i (1 .. $#rows) {  # don't care about row[0]... that just the headers.
+    if ($tab_curr ne $rows[$i]->[0]) { 
+	$tab_curr = $rows[$i]->[0];
+	$tab_id++;
+	$tab_seq++;
+	$dbh->do("insert into tab (id, seq, name) values (?,?,?)",undef,$tab_id,$tab_seq,$rows[$i]->[0]) or die $dbh->errstr;
+    }
+    if ($sec_curr ne $rows[$i]->[1]) {
+	$sec_curr = $rows[$i]->[1];
+	$sec_id++;
+	$sec_seq++;
+	$dbh->do("insert into section (id, tabid, seq, name) values (?,?,?,?)",undef,$sec_id,$tab_id,$sec_seq,$rows[$i]->[1]) or die $dbh->errstr;
+    }
+    $sc_id++;
+    $sc_seq++;
+    $dbh->do("insert into statcat (id, secid, seq, statistic, explanation) values (?,?,?,?,?)",undef,$sc_id,$sec_id,$sc_seq,$rows[$i]->[2],$rows[$i]->[3]) or die $dbh->errstr;
+}
+
+$dbh->close();

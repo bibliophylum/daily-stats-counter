@@ -1,0 +1,23 @@
+Run the dsc-createdb.pl script to create the sqlite database and load the questions.
+- uses daily-stats-counter.csv
+
+Run the dsc-loadlibs.pl script to load the library accounts.
+- uses libs.csv
+
+Don't forget to chgrp the dsc.db to www-data (the apache group), and make it group writable.
+
+If you have a working fILL installation, the install.sh script will copy the required files to there.  Otherwise, you'll need to manually put the html, js, cgi and css files somewhere that your web server can serve them.  (Make sure that the files are in the webserver group - eg www-data)
+
+Note that the /opt/dsc directory will need write permission for the group as well. (SQLite needs to be able to create a journal file in the same directory as the DB, before any modifications can take place. The journal is used to support transaction rollback.)
+
+
+Test data
+---------
+There is a LibreOffice Calc file, test-data.ods, that generates a few weeks of data for the daily-stats-counter.csv / libs.csv question set and the test library id 101.  (You can use CTRL-SHIFT-F9 to recalc the values)
+- save it as a csv
+- edit the csv to remove the header
+- get into sqlite ($ sqlite3 /opt/dsc/dsc.db [ENTER])
+- delete any existing data for the test lib:  sqlite> delete from daily where libid=101;
+- set the separator:  sqlite> .separator ","
+- import the csv into the "daily" table:
+    sqlite> .import /path/to/test-data.csv daily

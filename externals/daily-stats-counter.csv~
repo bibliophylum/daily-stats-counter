@@ -1,0 +1,21 @@
+tab,section,statistic,explanation
+Reference,Reference Questions in Person,Basic Reference,"Eg. Account information, help with the Internet, hours of operation, finding a specific title, requests for accessible equipment, etc."
+Reference,Reference Questions in Person,In-depth Reference,"Eg. eBook help, medical or legal questions, questions that require using a database, requests for NNELS content, etc."
+Reference,Reference Questions in Person,Readers' Advisory,Eg. Can you recommend a good mystery?
+Reference,Reference Questions by Phone,Basic Reference,"Eg. Account information, help with the Internet, hours of operation, finding a specific title, requests for accessible equipment, etc."
+Reference,Reference Questions by Phone,In-depth Reference,"Eg. eBook help, medical or legal questions, questions that require using a database, requests for NNELS content, etc."
+Reference,Reference Questions by Phone,Readers' Advisory,Eg. Can you recommend a good mystery?
+Reference,Reference Questions by Email,Basic Reference,"Eg. Account information, help with the Internet, hours of operation, finding a specific title, requests for accessible equipment, etc."
+Reference,Reference Questions by Email,In-depth Reference,"Eg. eBook help, medical or legal questions, questions that require using a database, requests for NNELS content, etc."
+Reference,Reference Questions by Email,Readers' Advisory,Eg. Can you recommend a good mystery?
+Programs,Adult,Adult Programs,How many programs ran that day.
+Programs,Adult,Attendance,How many people attended programs that day.
+Programs,Young Adult (YA),YA Programs,How many programs ran that day.
+Programs,Young Adult (YA),Attendance,How many people attended programs that day.
+Programs,Children,Children's Programs,How many programs ran that day.
+Programs,Children,Attendance,How many people attended programs that day.
+General Stats,Daily counters,Computer users,How many people used the computer stations that day.
+General Stats,Daily counters,Gate Count,Enter end of day total.
+General Stats,Daily counters,Adult Circulations,Enter end of day total.
+General Stats,Daily counters,Children's Circulations,Enter end of day total.
+General Stats,Daily counters,Audiovisual Circulations,Enter end of day total.

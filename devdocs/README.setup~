@@ -1,0 +1,12 @@
+Run the dsc-createdb.pl script to create the sqlite database and load the questions.
+- uses daily-stats-counter.csv
+
+Run the dsc-loadlibs.pl script to load the library accounts.
+- uses libs.csv
+
+Don't forget to chgrp the dsc.db to www-data (the apache group), and make it group writable.
+
+If you have a working fILL installation, the install.sh script will copy the required files to there.  Otherwise, you'll need to manually put the html, js, cgi and css files somewhere that your web server can serve them.  (Make sure that the files are in the webserver group - eg www-data)
+
+
+

@@ -1,0 +1,93 @@
+#<VirtualHost mintaka.gotdns.org:80>
+<VirtualHost *:80>
+	ServerName saiph.gotdns.org
+	Redirect / https://localhost/
+</VirtualHost>
+
+<VirtualHost *:443>
+	ServerName saiph.gotdns.org
+	# for perl to find my local modules
+	SetEnv PERL5LIB /opt/dsc/modules
+
+	# under mod_perl, taint mode is on... which means that PERL5LIB is ignored.
+	# Try this:
+	#PerlOptions +Parent
+	#PerlSwitches -I/home/dev1/lib/perl
+
+	# for C::A and H::T to find my templates
+	SetEnv HTML_TEMPLATE_ROOT /opt/dsc/templates
+
+	# for scripts to use as the base dir for data files, uploads, etc.
+	SetEnv EXTERNALS /opt/dsc/externals
+
+	# for DBI to find a database connection
+	# DBI_DSN and/or DBI_USER may also be defined here
+
+	# /index.html is no longer the default landing page...
+	RewriteEngine On
+	RewriteRule ^/?$ /dsc.html [R=302,L]
+
+	DocumentRoot /opt/dsc/htdocs/
+	<Directory />
+		Options FollowSymLinks
+		AllowOverride None
+	</Directory>
+	<Directory /opt/dsc/htdocs/>
+		Options Indexes FollowSymLinks MultiViews
+		AllowOverride None
+		# 2.2 way:
+		#Order allow,deny
+		#Allow from all
+		# 2.4 way:
+		Require all granted
+
+		# this ip has been spamming the access log every 3 seconds...
+		#Deny from 206.45.206.151  
+		# This directive allows us to have apache2's default start page
+                # in /apache2-default/, but still have / go to the right place
+                #RedirectMatch ^/$ /apache2-default/
+	</Directory>
+
+        # log was filling up with "attempt to invoke directory as script".
+        # fix as per https://wiki.apache.org/httpd/DirectoryAsScript
+        #ScriptAlias /cgi-bin/ /opt/dsc/bin/
+        Alias /cgi-bin /opt/dsc/bin
+        <Directory /opt/dsc/bin>
+                AddHandler cgi-script cgi pl
+		AllowOverride None
+		Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
+		# 2.2 way:
+		#Order allow,deny
+		#Allow from all
+		# 2.4 way:
+		Require all granted
+
+		#Deny from 206.45.206.151  
+	</Directory>
+
+	ErrorLog "|/usr/bin/rotatelogs /opt/dsc/logs/error.log.%Y%m%d-%H%M%S 10M"
+
+	# Possible values include: debug, info, notice, warn, error, crit,
+	# alert, emerg.
+	LogLevel warn
+
+	CustomLog "|/usr/bin/rotatelogs /opt/dsc/logs/access.log.%Y%m%d-%H%M%S 5M" combined
+	ServerSignature On
+
+	# script log must be owned by apache user, and exist before apache starts
+	# see http://objectmix.com/apache/648407-script-log-not-logging.html
+	ScriptLog "/opt/dsc/logs/cgi_error_log"
+
+	SSLEngine on	
+        SSLCertificateFile /etc/ssl/certs/mintaka.crt
+        SSLCertificateKeyFile /etc/ssl/private/mintaka.key 
+
+	<Proxy *>
+	   AddDefaultCharset off
+	   Order deny,allow
+	   Allow from all
+	</Proxy>
+
+	ProxyVia Off
+
+</VirtualHost>

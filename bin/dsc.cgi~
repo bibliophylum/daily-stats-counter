@@ -1,0 +1,9 @@
+#!/usr/bin/perl -w
+##
+##  CGI-Application dsc (daily stats counter)
+##
+use strict;
+use lib "/opt/fILL/modules";
+use fILL::DSC;
+my $app = fILL::DSC->new();
+$app->run();

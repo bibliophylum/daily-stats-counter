@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Daily Statistics Counter</title>
+
+  <script type="text/javascript" src="/js/jquery-1.11.1.js"></script>  <!-- change to jquery-1.11.1.min.js before going to production -->
+  <script type="text/javascript" src="/js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="/js/jquery.jeditable.js"></script>
+
+  <link rel="stylesheet" type="text/css" href="/plugins/jquery-ui-1.11.1/jquery-ui.css">
+  <script type="text/javascript" src="/plugins/jquery-ui-1.11.1/jquery-ui.js"></script> 
+
+  <script type="text/javascript" src="/js/dsc-1.1.js"></script>
+  <link rel="stylesheet" type="text/css" href="/css/dsc.css">
+</head>
+
+<body>
+
+<script type="text/javascript">
+
+$.ajaxSetup ({  
+  cache: false  
+});  
+
+</script>
+
+
+<div class="header">
+  <div id="login">
+    <form id="login" class="headerleft">
+      Username: <input type="text" id="username"> / Password: <input type="password" id="password"> <input type="submit" value="Login">
+    </form>
+    <p id="loginerror" />
+  </div>
+
+  <form id="dateform" class="headerright">
+    Date: <input type="text" id="thedate"> <input type="submit" value="Get">
+  </form>
+</div>
+
+<div class="content">
+  <div id="waitDiv">
+    Loading... <img src="/wait.gif">
+  </div>
+
+  <div id="tabs"></div>
+
+</div>
+
+<div class="footer">
+  <h2>Instructions</h2>
+  <ul>
+    <li>Click the <img src="/img/Plus.png"> or <img src="/img/Minus.png"> to adjust values.</li>
+    <li>Or click on the value itself to enter a new number.</li>
+  </ul>
+  <form id="logout"><input type="submit" value="Log out"></form>
+</div>
+
+</body>
+</html>
+

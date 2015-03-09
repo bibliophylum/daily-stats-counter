@@ -1,0 +1,42 @@
+table.column {
+    float:left;
+    width:33%;
+    position:relative;
+    padding:0 0 1em 0;
+    overflow:hidden;
+    border: 1px solid #000000;
+}
+
+.header {
+    height:30px;
+    background:#F0F0F0;
+    border:1px solid #CCC;
+    clear:both;
+    float:left;
+    width:100%;
+}
+
+.content {
+    border:1px solid #CCC;
+    clear:both;
+    float:left;
+    width:100%;
+}
+
+form.headerleft {
+    float:left;
+}
+form.headerright {
+    float:right;
+}
+
+.footer {
+    clear:both;
+    float:left;
+    width:100%;
+    border-top:1px solid #000;
+}
+
+div#login {
+    display: none;
+}
